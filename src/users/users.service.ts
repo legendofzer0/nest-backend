@@ -12,18 +12,6 @@ export class UsersService {
     });
   }
 
-  async login(data: UserDTO) {
-    const user = await this.findByEmail(data.email);
-    if (!user) {
-      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
-    }
-    const passOk = await ComparePassword(data.password, user.password);
-    if (!passOk) {
-      throw new HttpException('Password is wrong', HttpStatus.FORBIDDEN);
-    }
-    return user;
-  }
-
   async findAll() {
     return await prisma.users.findMany();
   }
@@ -32,6 +20,9 @@ export class UsersService {
     try {
       return await prisma.users.findFirstOrThrow({
         where: { email: data },
+        include: {
+          role_relation: true,
+        },
       });
     } catch (error) {
       return null;

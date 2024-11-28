@@ -5,13 +5,13 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
-import { ConnectionModule } from './connection/connection.module';
 import { HashMiddleware } from './hash/hash.middleware';
 import { UsersController } from './users/users.controller';
 import { RolesModule } from './roles/roles.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, ConnectionModule, RolesModule],
+  imports: [UsersModule, RolesModule, AuthModule],
   controllers: [],
   providers: [],
 })
