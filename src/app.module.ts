@@ -21,6 +21,7 @@ export class AppModule implements NestModule {
       .apply(HashMiddleware)
       .exclude(
         { path: 'users', method: RequestMethod.GET },
+        { path: 'users/:id', method: RequestMethod.GET },
         { path: 'users/login', method: RequestMethod.POST },
         { path: 'users', method: RequestMethod.DELETE },
       )

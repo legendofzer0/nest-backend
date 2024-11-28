@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { ComparePassword } from 'src/hash/compare/compare.middleware';
 import { JwtService } from '@nestjs/jwt';
@@ -26,5 +31,13 @@ export class AuthService {
     }
     const { password, ...userData } = user;
     return this.jwtService.sign(userData);
+  }
+  async decodeJWT(payload: { token: string }) {
+    try {
+      const data = await this.jwtService.decode(payload.token);
+      return data;
+    } catch {
+      throw new HttpException('Token is Broken', HttpStatus.BAD_REQUEST);
+    }
   }
 }

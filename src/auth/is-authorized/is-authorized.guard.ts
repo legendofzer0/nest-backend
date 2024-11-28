@@ -24,7 +24,7 @@ export class IsAuthorizedGuard implements CanActivate {
     const token = this.extractToken(authHeader);
     try {
       const decoded = this.jwtService.decode(token);
-      console.log(decoded);
+
       if (decoded.role_relation.name === 'admin') {
         return true;
       }

@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Prisma } from '@prisma/client';
@@ -19,11 +21,15 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: Prisma.UsersCreateInput) {
-    return this.usersService.create(createUserDto);
+    try {
+      const create = this.usersService.create(createUserDto);
+      return create;
+    } catch {
+      throw new HttpException('User Aleady Exists', HttpStatus.CONFLICT);
+    }
   }
 
   @Get()
-  @UseGuards(IsLoggedInGuard)
   @UseGuards(IsAuthorizedGuard)
   findAll() {
     return this.usersService.findAll();
